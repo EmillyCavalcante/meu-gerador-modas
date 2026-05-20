@@ -7,47 +7,71 @@
     <style>
         body {
             display: flex;
+            flex-direction: column; /* Alinha o menu e o provador verticalmente */
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             background-color: #f5f5f5;
             margin: 0;
             font-family: Arial, sans-serif;
+            gap: 30px;
         }
 
-        /* Layout principal dividindo a tela em 3 colunas */
+        /* Menu superior para escolher a categoria */
+        .menu-categorias {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-categoria {
+            background-color: #e0e0e0;
+            color: #333;
+            border: none;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        /* Cor de quando a categoria está selecionada */
+        .btn-categoria.ativo {
+            background-color: #ff8da1;
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 141, 161, 0.4);
+        }
+
+        /* Layout do provador (Setas + Foto) */
         .interface-provador {
             display: flex;
             align-items: center;
-            gap: 40px;
+            gap: 30px;
         }
 
-        /* Painel de botões laterais */
-        .painel-botoes {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        /* Estilo dos botões */
-        .btn-controle {
+        /* Estilo das setas de passar/voltar */
+        .btn-seta {
             background-color: #ff8da1;
             color: white;
             border: none;
-            padding: 12px 20px;
-            font-size: 14px;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
             font-weight: bold;
-            border-radius: 8px;
+            border-radius: 50%; /* Deixa o botão redondo */
             cursor: pointer;
             transition: background 0.2s;
-            min-width: 140px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        .btn-controle:hover {
+        .btn-seta:hover {
             background-color: #e06c82;
         }
 
-        /* O container ajustado para a sua foto */
+        /* O container da foto */
         .container-camadas {
             position: relative;
             width: 400px;  
@@ -71,38 +95,35 @@
 </head>
 <body>
 
+    <div class="menu-categorias">
+        <button id="btn-cat-top" class="btn-categoria ativo" onclick="selecionarCategoria('top')">Tops</button>
+        <button id="btn-cat-calca" class="btn-categoria" onclick="selecionarCategoria('calca')">Calças</button>
+        <button id="btn-cat-sapato" class="btn-categoria" onclick="selecionarCategoria('sapato')">Sapatos</button>
+        <button id="btn-cat-blusa" class="btn-categoria" onclick="selecionarCategoria('blusa')">Blusas</button>
+    </div>
+
     <div class="interface-provador">
         
-        <div class="painel-botoes">
-            <button class="btn-controle" onclick="mudarRoupa('top', -1)">⬅ Voltar Top</button>
-            <button class="btn-controle" onclick="mudarRoupa('calca', -1)">⬅ Voltar Calça</button>
-            <button class="btn-controle" onclick="mudarRoupa('sapato', -1)">⬅ Voltar Sapato</button>
-            <button class="btn-controle" onclick="mudarRoupa('blusa', -1)">⬅ Voltar Blusa</button>
-        </div>
+        <button class="btn-seta" onclick="acionarSeta(-1)">⬅</button>
 
         <div class="container-camadas">
             <img src="base.png" class="camada" alt="Modelo Base">
 
             <img id="camada-sapato" src="sapato0.png" class="camada" alt="Sapato">
-
             <img id="camada-top" src="top0.png" class="camada" alt="Top">
-            
             <img id="camada-calca" src="calca0.png" class="camada" alt="Calca">
-
             <img id="camada-blusa" src="blusa0.png" class="camada" alt="Blusa">
         </div>
 
-        <div class="painel-botoes">
-            <button class="btn-controle" onclick="mudarRoupa('top', 1)">Avançar Top ➡</button>
-            <button class="btn-controle" onclick="mudarRoupa('calca', 1)">Avançar Calça ➡</button>
-            <button class="btn-controle" onclick="mudarRoupa('sapato', 1)">Avançar Sapato ➡</button>
-            <button class="btn-controle" onclick="mudarRoupa('blusa', 1)">Avançar Blusa ➡</button>
-        </div>
+        <button class="btn-seta" onclick="acionarSeta(1)">➡</button>
 
     </div>
 
     <script>
-        // Guardamos em qual número de roupa cada categoria está começando
+        // Começamos controlando a categoria 'top' por padrão
+        let categoriaAtiva = 'top';
+
+        // O histórico de índices que você já configurou
         const indices = {
             blusa: 0,
             top: 0,
@@ -110,31 +131,45 @@
             sapato: 0
         };
 
-        // ALTERE AQUI: quantidade real de itens que você tem de cada um no GitHub
+        // Seus limites máximos exatos
         const limitesMaximos = {
-            blusa: 4,   // Ex: blusa1 até blusa5
-            top: 9,     // Ex: top1 até top8
-            calca: 4,    // Ex: calca1 até calca6
-            sapato: 8  // Ex: sapato1 até sapato4
+            blusa: 4,
+            top: 9,
+            calca: 4,
+            sapato: 8
         };
 
+        // Função para mudar qual categoria as setas vão controlar
+        function selecionarCategoria(novaCategoria) {
+            // Remove a cor de destaque do botão antigo
+            document.getElementById(`btn-cat-${categoriaAtiva}`).classList.remove('ativo');
+            
+            // Define a nova categoria como a dona das setas
+            categoriaAtiva = novaCategoria;
+            
+            // Adiciona a cor de destaque no novo botão clicado
+            document.getElementById(`btn-cat-${categoriaAtiva}`).classList.add('ativo');
+        }
+
+        // Função que as duas setas redondas chamam
+        function acionarSeta(direcao) {
+            // Executa a troca passando a categoria selecionada no momento
+            mudarRoupa(categoriaAtiva, direcao);
+        }
+
+        // A sua função principal de cálculo, agora acionada dinamicamente
         function mudarRoupa(categoria, direcao) {
-            // Pega o limite máximo específico desta categoria
             const limiteDaCategoria = limitesMaximos[categoria];
 
-            // Atualiza o número atual somando 1 ou -1
             indices[categoria] += direcao;
 
-            // Se voltar antes do 1, vai para o limite máximo daquela categoria
             if (indices[categoria] < 0) {
                 indices[categoria] = limiteDaCategoria;
             }
-            // Se passar do limite máximo, volta para o 1
             if (indices[categoria] > limiteDaCategoria) {
                 indices[categoria] = 0;
             }
 
-            // Encontra a imagem na tela e altera o link do arquivo correspondente
             const imagemCamada = document.getElementById(`camada-${categoria}`);
             imagemCamada.src = `${categoria}${indices[categoria]}.png`;
         }
