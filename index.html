@@ -126,12 +126,12 @@
             indices[categoria] += direcao;
 
             // Se voltar antes do 1, vai para o limite máximo daquela categoria
-            if (indices[categoria] < 1) {
+            if (indices[categoria] < 0) {
                 indices[categoria] = limiteDaCategoria;
             }
             // Se passar do limite máximo, volta para o 1
             if (indices[categoria] > limiteDaCategoria) {
-                indices[categoria] = 1;
+                indices[categoria] = 0;
             }
 
             // Encontra a imagem na tela e altera o link do arquivo correspondente
