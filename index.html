@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Provador Virtual da Emily</title>
+    <title>Provador Virtual da Emilly</title>
     <style>
         body {
             display: flex;
@@ -40,14 +40,14 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background 0.2s;
-            min-width: 120px;
+            min-width: 140px;
         }
 
         .btn-controle:hover {
             background-color: #e06c82;
         }
 
-        /* O container que você já conhece, ajustado para a sua foto */
+        /* O container ajustado para a sua foto */
         .container-camadas {
             position: relative;
             width: 400px;  
@@ -74,26 +74,29 @@
     <div class="interface-provador">
         
         <div class="painel-botoes">
-             <button class="btn-controle" onclick="mudarRoupa('blusa', -1)">⬅ Voltar Blusa</button>
+            <button class="btn-controle" onclick="mudarRoupa('blusa', -1)">⬅ Voltar Blusa</button>
             <button class="btn-controle" onclick="mudarRoupa('top', -1)">⬅ Voltar Top</button>
-             <button class="btn-controle" onclick="mudarRoupa('sapato', -1)">⬅ Voltar Sapato</button>
             <button class="btn-controle" onclick="mudarRoupa('calca', -1)">⬅ Voltar Calça</button>
+            <button class="btn-controle" onclick="mudarRoupa('sapato', -1)">⬅ Voltar Sapato</button>
         </div>
 
         <div class="container-camadas">
             <img src="base.png" class="camada" alt="Modelo Base">
 
-             <img id="camada-blusa" src="blusa1.png" class="camada" alt="Blusa">
-            <img id="camada-top" src="top1.png" class="camada" alt="Top">
-             <img id="camada-sapato" src="sapato1.png" class="camada" alt="Sapato">
+            <img id="camada-sapato" src="sapato1.png" class="camada" alt="Sapato">
+            
             <img id="camada-calca" src="calca1.png" class="camada" alt="Calca">
+            
+            <img id="camada-top" src="top1.png" class="camada" alt="Top">
+
+            <img id="camada-blusa" src="blusa1.png" class="camada" alt="Blusa">
         </div>
 
         <div class="painel-botoes">
-             <button class="btn-controle" onclick="mudarRoupa('blusa', 1)">Avançar Blusa ➡</button>
+            <button class="btn-controle" onclick="mudarRoupa('blusa', 1)">Avançar Blusa ➡</button>
             <button class="btn-controle" onclick="mudarRoupa('top', 1)">Avançar Top ➡</button>
-              <button class="btn-controle" onclick="mudarRoupa('sapato', 1)">Avançar Sapato ➡</button>
             <button class="btn-controle" onclick="mudarRoupa('calca', 1)">Avançar Calça ➡</button>
+            <button class="btn-controle" onclick="mudarRoupa('sapato', 1)">Avançar Sapato ➡</button>
         </div>
 
     </div>
@@ -101,29 +104,37 @@
     <script>
         // Guardamos em qual número de roupa cada categoria está começando
         const indices = {
+            blusa: 1,
             top: 1,
             calca: 1,
-            sapato: 1,
-            blusa: 1
+            sapato: 1
         };
 
-        // Quantidade máxima de opções que você tem para cada categoria (você disse até 20)
-        const limiteMaximo = 20; 
+        // ALTERE AQUI: quantidade real de itens que você tem de cada um no GitHub
+        const limitesMaximos = {
+            blusa: 2,   // Ex: blusa1 até blusa5
+            top: 5,     // Ex: top1 até top8
+            calca: 3,    // Ex: calca1 até calca6
+            sapato: 2  // Ex: sapato1 até sapato4
+        };
 
         function mudarRoupa(categoria, direcao) {
-            // Atualiza o número atual somando 1 (avançar) ou -1 (voltar)
+            // Pega o limite máximo específico desta categoria
+            const limiteDaCategoria = limitesMaximos[categoria];
+
+            // Atualiza o número atual somando 1 ou -1
             indices[categoria] += direcao;
 
-            // Se voltar antes do 1, ele vai direto para a última roupa (roda em ciclo)
+            // Se voltar antes do 1, vai para o limite máximo daquela categoria
             if (indices[categoria] < 1) {
-                indices[categoria] = limiteMaximo;
+                indices[categoria] = limiteDaCategoria;
             }
-            // Se passar do limite máximo, ele volta para a roupa 1
-            if (indices[categoria] > limiteMaximo) {
+            // Se passar do limite máximo, volta para o 1
+            if (indices[categoria] > limiteDaCategoria) {
                 indices[categoria] = 1;
             }
 
-            // Encontra a imagem na tela e troca o arquivo .png correspondente
+            // Encontra a imagem na tela e altera o link do arquivo correspondente
             const imagemCamada = document.getElementById(`camada-${categoria}`);
             imagemCamada.src = `${categoria}${indices[categoria]}.png`;
         }
