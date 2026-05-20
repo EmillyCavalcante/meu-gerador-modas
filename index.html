@@ -10,45 +10,24 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #f5f5f5;
+            background-color: #121212; /* Fundo escuro para destacar o neon */
             margin: 0;
             font-family: Arial, sans-serif;
         }
 
-        /* Layout principal dividindo a tela em colunas */
+        /* Estrutura principal vertical: Provador em cima, Botões embaixo */
+        .layout-principal {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        /* Layout do meio (Setas + Foto) */
         .interface-provador {
             display: flex;
             align-items: center;
             gap: 20px;
-        }
-
-        /* Painéis de botões laterais */
-        .painel-botoes {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            min-width: 130px;
-        }
-
-        /* Estilo dos botões de categoria */
-        .btn-categoria {
-            background-color: #e0e0e0;
-            color: #333;
-            border: none;
-            padding: 12px 15px;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
-        }
-
-        /* Cor de quando a categoria está selecionada para edição */
-        .btn-categoria.ativo {
-            background-color: #ff8da1;
-            color: white;
-            box-shadow: 0 4px 12px rgba(255, 141, 161, 0.3);
         }
 
         /* Estilo das setas redondas de passar/voltar */
@@ -56,21 +35,22 @@
             background-color: #ff8da1;
             color: white;
             border: none;
-            width: 45px;
-            height: 45px;
-            font-size: 18px;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
             font-weight: bold;
             border-radius: 50%;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(255, 141, 161, 0.3);
         }
 
         .btn-seta:hover {
             background-color: #e06c82;
+            transform: scale(1.05);
         }
 
         /* O container da foto */
@@ -78,9 +58,9 @@
             position: relative;
             width: 400px;  
             height: 600px; 
-            background-color: #fff;
+            background-color: #1a1a1a;
             border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
             overflow: hidden;
         }
 
@@ -93,34 +73,73 @@
             height: 100%;
             object-fit: contain;
         }
+
+        /* Painel inferior de botões (Rente à base do container) */
+        .painel-botoes-inferior {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 colunas perfeitas */
+            gap: 15px;
+            width: 500px; /* Largura total alinhada com as setas e container */
+            padding: 10px;
+        }
+
+        /* Estilo dos botões com Borda Neon Branca e Rosa */
+        .btn-categoria {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            border: 2px solid #ffffff; /* Borda padrão branca */
+            padding: 12px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 0 5px #ffffff, inset 0 0 5px #ffffff; /* Brilho neon branco interno/externo */
+        }
+
+        /* Efeito de hover comum nos botões */
+        .btn-categoria:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Quando o botão estiver selecionado: NEON ROSA MARCANTE */
+        .btn-categoria.ativo {
+            border-color: #ff8da1;
+            color: #ff8da1;
+            box-shadow: 0 0 15px #ff8da1, inset 0 0 8px #ff8da1; /* Super neon rosa */
+            text-shadow: 0 0 5px #ff8da1;
+        }
     </style>
 </head>
 <body>
 
-    <div class="interface-provador">
-        
-        <div class="painel-botoes">
+    <div class="layout-principal">
+
+        <div class="interface-provador">
+            
+            <button class="btn-seta" onclick="acionarSeta(-1)">⬅</button>
+
+            <div class="container-camadas">
+                <img src="base.png" class="camada" alt="Modelo Base">
+
+                <img id="camada-sapato" src="sapato0.png" class="camada" alt="Sapato">
+                <img id="camada-saia" src="saia0.png" class="camada" alt="Saia">
+                <img id="camada-calca" src="calca0.png" class="camada" alt="Calca">
+                <img id="camada-vestido" src="vestido0.png" class="camada" alt="Vestido">
+                <img id="camada-top" src="top0.png" class="camada" alt="Top">
+                <img id="camada-blusa" src="blusa0.png" class="camada" alt="Blusa">
+            </div>
+
+            <button class="btn-seta" onclick="acionarSeta(1)">➡</button>
+
+        </div>
+
+        <div class="painel-botoes-inferior">
             <button id="btn-cat-top" class="btn-categoria ativo" onclick="selecionarCategoria('top')">Top</button>
             <button id="btn-cat-vestido" class="btn-categoria" onclick="selecionarCategoria('vestido')">Vestido</button>
             <button id="btn-cat-blusa" class="btn-categoria" onclick="selecionarCategoria('blusa')">Blusa</button>
-        </div>
-
-        <button class="btn-seta" onclick="acionarSeta(-1)">⬅</button>
-
-        <div class="container-camadas">
-            <img src="base.png" class="camada" alt="Modelo Base">
-
-            <img id="camada-sapato" src="sapato0.png" class="camada" alt="Sapato">
-            <img id="camada-saia" src="saia0.png" class="camada" alt="Saia">
-            <img id="camada-calca" src="calca0.png" class="camada" alt="Calca">
-            <img id="camada-vestido" src="vestido0.png" class="camada" alt="Vestido">
-            <img id="camada-top" src="top0.png" class="camada" alt="Top">
-            <img id="camada-blusa" src="blusa0.png" class="camada" alt="Blusa">
-        </div>
-
-        <button class="btn-seta" onclick="acionarSeta(1)">➡</button>
-
-        <div class="painel-botoes">
+            
             <button id="btn-cat-calca" class="btn-categoria" onclick="selecionarCategoria('calca')">Calça</button>
             <button id="btn-cat-saia" class="btn-categoria" onclick="selecionarCategoria('saia')">Saia</button>
             <button id="btn-cat-sapato" class="btn-categoria" onclick="selecionarCategoria('sapato')">Sapato</button>
@@ -129,10 +148,8 @@
     </div>
 
     <script>
-        // Começa controlando o 'top' por padrão
         let categoriaAtiva = 'top';
 
-        // Todos os índices iniciando em 0 (suas imagens base limpas)
         const indices = {
             top: 0,
             vestido: 0,
@@ -142,34 +159,25 @@
             sapato: 0
         };
 
-        // AJUSTE AQUI: coloque a quantidade máxima de itens que você tem de cada um no GitHub
         const limitesMaximos = {
             top: 9,
-            vestido: 5,   // Exemplo: se tiver vestido1 até vestido5
+            vestido: 5,   
             blusa: 4,
             calca: 4,
-            saia: 5,      // Exemplo: se tiver saia1 até saia5
+            saia: 5,      
             sapato: 8
         };
 
-        // Troca qual categoria as setas redondas vão comandar
         function selecionarCategoria(novaCategoria) {
-            // Apaga o destaque do botão antigo
             document.getElementById(`btn-cat-${categoriaAtiva}`).classList.remove('ativo');
-            
-            // Atribui a nova categoria ativa
             categoriaAtiva = novaCategoria;
-            
-            // Acende o destaque no botão novo
             document.getElementById(`btn-cat-${categoriaAtiva}`).classList.add('ativo');
         }
 
-        // Responde ao clique das setas redondas laterais
         function acionarSeta(direcao) {
             mudarRoupa(categoriaAtiva, direcao);
         }
 
-        // Faz o cálculo matemático e atualiza a imagem correspondente
         function mudarRoupa(categoria, direcao) {
             const limiteDaCategoria = limitesMaximos[categoria];
 
@@ -182,6 +190,31 @@
                 indices[categoria] = 0;
             }
 
+            // --- REGRAS DE CONFLITO ---
+            
+            // Regra 1: Se mexer no TOP e ele for diferente de zero, tira o VESTIDO
+            if (categoria === 'top' && indices['top'] !== 0) {
+                indices['vestido'] = 0;
+                document.getElementById('camada-vestido').src = 'vestido0.png';
+            }
+            // Vise-versa: Se mexer no VESTIDO e ele for diferente de zero, tira o TOP
+            if (categoria === 'vestido' && indices['vestido'] !== 0) {
+                indices['top'] = 0;
+                document.getElementById('camada-top').src = 'top0.png';
+            }
+
+            // Regra 2: Se mexer na CALÇA e ela for diferente de zero, tira a SAIA
+            if (categoria === 'calca' && indices['calca'] !== 0) {
+                indices['saia'] = 0;
+                document.getElementById('camada-saia').src = 'saia0.png';
+            }
+            // Vise-versa: Se mexer na SAIA e ela for diferente de zero, tira a CALÇA
+            if (categoria === 'saia' && indices['saia'] !== 0) {
+                indices['calca'] = 0;
+                document.getElementById('camada-calca').src = 'calca0.png';
+            }
+
+            // Atualiza a imagem da categoria que você acabou de clicar
             const imagemCamada = document.getElementById(`camada-${categoria}`);
             imagemCamada.src = `${categoria}${indices[categoria]}.png`;
         }
