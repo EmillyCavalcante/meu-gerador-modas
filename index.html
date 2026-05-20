@@ -3,46 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Camadas</title>
+    <title>Provador Virtual da Emily</title>
     <style>
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #f0f0f0;
+            background-color: #f5f5f5;
             margin: 0;
+            font-family: Arial, sans-serif;
         }
 
-      /* O container define o tamanho ideal para a sua imagem base vertical */
+        /* Layout principal dividindo a tela em 3 colunas */
+        .interface-provador {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        /* Painel de botões laterais */
+        .painel-botoes {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Estilo dos botões */
+        .btn-controle {
+            background-color: #ff8da1;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            min-width: 120px;
+        }
+
+        .btn-controle:hover {
+            background-color: #e06c82;
+        }
+
+        /* O container que você já conhece, ajustado para a sua foto */
         .container-camadas {
             position: relative;
-            width: 400px;  /* Largura ajustada */
-            height: 600px; /* Altura ajustada para manter a proporção */
-            max-width: 100%; /* Garante que o site não quebre no celular */
+            width: 400px;  
+            height: 600px; 
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            overflow: hidden;
         }
 
-        /* Todas as imagens vão se alinhar perfeitamente no topo esquerdo do container */
+        /* Camadas de imagem empilhadas */
         .camada {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Garante que as imagens não fiquem distorcidas */
+            object-fit: contain;
         }
     </style>
 </head>
 <body>
 
-    <div class="container-camadas">
-        <!-- A imagem base fica embaixo de todas -->
-        <img src="base.png" class="camada" alt="Imagem Base">
+    <div class="interface-provador">
         
-        <!-- As imagens seguintes vão se empilhando na ordem em que aparecem aqui -->
-        <img src="top1.png" class="camada" alt="Camada 1">
-        <img src="calca1.png" class="camada" alt="Camada 2">
+        <div class="painel-botoes">
+             <button class="btn-controle" onclick="mudarRoupa('blusa', -1)">⬅ Voltar Blusas</button>
+            <button class="btn-controle" onclick="mudarRoupa('top', -1)">⬅ Voltar Top</button>
+             <button class="btn-controle" onclick="mudarRoupa('sapato', -1)">⬅ Voltar Sapato</button>
+            <button class="btn-controle" onclick="mudarRoupa('calca', -1)">⬅ Voltar Calça</button>
+        </div>
+
+        <div class="container-camadas">
+            <img src="base.png" class="camada" alt="Modelo Base">
+
+             <img id="camada-blusa" src="blusa1.png" class="camada" alt="Blus">
+            <img id="camada-top" src="top1.png" class="camada" alt="Top">
+             <img id="camada-shoes" src="sapato1.png" class="camada" alt="Sapato">
+            <img id="camada-bottom" src="calca1.png" class="camada" alt="Calca">
+        </div>
+
+        <div class="painel-botoes">
+             <button class="btn-controle" onclick="mudarRoupa('blusa', 1)">Avançar Blusa ➡</button>
+            <button class="btn-controle" onclick="mudarRoupa('top', 1)">Avançar Top ➡</button>
+              <button class="btn-controle" onclick="mudarRoupa('sapato', 1)">Avançar Sapato ➡</button>
+            <button class="btn-controle" onclick="mudarRoupa('calca', 1)">Avançar Calça ➡</button>
+        </div>
+
     </div>
+
+    <script>
+        // Guardamos em qual número de roupa cada categoria está começando
+        const indices = {
+            top: 1,
+            calca: 1,
+            sapato: 1,
+            blusa: 1
+        };
+
+        // Quantidade máxima de opções que você tem para cada categoria (você disse até 20)
+        const limiteMaximo = 20; 
+
+        function mudarRoupa(categoria, direcao) {
+            // Atualiza o número atual somando 1 (avançar) ou -1 (voltar)
+            indices[categoria] += direcao;
+
+            // Se voltar antes do 1, ele vai direto para a última roupa (roda em ciclo)
+            if (indices[categoria] < 1) {
+                indices[categoria] = limiteMaximo;
+            }
+            // Se passar do limite máximo, ele volta para a roupa 1
+            if (indices[categoria] > limiteMaximo) {
+                indices[categoria] = 1;
+            }
+
+            // Encontra a imagem na tela e troca o arquivo .png correspondente
+            const imagemCamada = document.getElementById(`camada-${categoria}`);
+            imagemCamada.src = `${categoria}${indices[categoria]}.png`;
+        }
+    </script>
 
 </body>
 </html>
