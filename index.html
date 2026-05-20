@@ -160,10 +160,10 @@
 
         const limitesMaximos = {
             top: 9,
-            vestido: 5,   
+            vestido: 9,   
             blusa: 4,
             calca: 4,
-            saia: 5,      
+            saia: 2,      
             sapato: 8
         };
 
@@ -205,6 +205,22 @@
             if (categoria === 'saia' && indices['saia'] !== 0) {
                 indices['calca'] = 0;
                 document.getElementById('camada-calca').src = 'calca0.png';
+            }
+            if (categoria === 'calca' && indices['calca'] !== 0) {
+                indices['vestido'] = 0;
+                document.getElementById('camada-vestido').src = 'vestido0.png';
+             }
+            if (categoria === 'vestido' && indices['vestido'] !== 0) {
+                indices['calca'] = 0;
+            }
+                document.getElementById('camada-calca').src = 'calca0.png';
+            if (categoria === 'saia' && indices['saia'] !== 0) {
+                indices['vestido'] = 0;
+                document.getElementById('camada-vestido').src = 'vestido0.png';
+             }
+            if (categoria === 'vestido' && indices['vestido'] !== 0) {
+                indices['saia'] = 0;
+                document.getElementById('camada-saia').src = 'saia0.png';
             }
 
             const imagemCamada = document.getElementById(`camada-${categoria}`);
