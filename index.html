@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Camadas</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+
+        /* O container define o tamanho do seu projeto */
+        .container-camadas {
+            position: relative;
+            width: 500px;  /* Ajuste para o tamanho da sua imagem base */
+            height: 500px; /* Ajuste para o tamanho da sua imagem base */
+        }
+
+        /* Todas as imagens vão se alinhar perfeitamente no topo esquerdo do container */
+        .camada {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Garante que as imagens não fiquem distorcidas */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-camadas">
+        <!-- A imagem base fica embaixo de todas -->
+        <img src="base.png" class="camada" alt="Imagem Base">
+        
+        <!-- As imagens seguintes vão se empilhando na ordem em que aparecem aqui -->
+        <img src="top1.png" class="camada" alt="Camada 1">
+        <img src="calca1.png" class="camada" alt="Camada 2">
+    </div>
+
+</body>
+</html>
