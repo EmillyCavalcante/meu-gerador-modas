@@ -7,58 +7,60 @@
     <style>
         body {
             display: flex;
-            flex-direction: column; /* Alinha o menu e o provador verticalmente */
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             background-color: #f5f5f5;
             margin: 0;
             font-family: Arial, sans-serif;
-            gap: 30px;
         }
 
-        /* Menu superior para escolher a categoria */
-        .menu-categorias {
+        /* Layout principal dividindo a tela em colunas */
+        .interface-provador {
             display: flex;
-            gap: 15px;
+            align-items: center;
+            gap: 20px;
         }
 
+        /* Painéis de botões laterais */
+        .painel-botoes {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            min-width: 130px;
+        }
+
+        /* Estilo dos botões de categoria */
         .btn-categoria {
             background-color: #e0e0e0;
             color: #333;
             border: none;
-            padding: 12px 24px;
-            font-size: 15px;
+            padding: 12px 15px;
+            font-size: 14px;
             font-weight: bold;
-            border-radius: 30px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s;
+            text-align: center;
         }
 
-        /* Cor de quando a categoria está selecionada */
+        /* Cor de quando a categoria está selecionada para edição */
         .btn-categoria.ativo {
             background-color: #ff8da1;
             color: white;
-            box-shadow: 0 4px 12px rgba(255, 141, 161, 0.4);
+            box-shadow: 0 4px 12px rgba(255, 141, 161, 0.3);
         }
 
-        /* Layout do provador (Setas + Foto) */
-        .interface-provador {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-        }
-
-        /* Estilo das setas de passar/voltar */
+        /* Estilo das setas redondas de passar/voltar */
         .btn-seta {
             background-color: #ff8da1;
             color: white;
             border: none;
-            width: 50px;
-            height: 50px;
-            font-size: 20px;
+            width: 45px;
+            height: 45px;
+            font-size: 18px;
             font-weight: bold;
-            border-radius: 50%; /* Deixa o botão redondo */
+            border-radius: 50%;
             cursor: pointer;
             transition: background 0.2s;
             display: flex;
@@ -95,69 +97,79 @@
 </head>
 <body>
 
-    <div class="menu-categorias">
-        <button id="btn-cat-top" class="btn-categoria ativo" onclick="selecionarCategoria('top')">Tops</button>
-        <button id="btn-cat-calca" class="btn-categoria" onclick="selecionarCategoria('calca')">Calças</button>
-        <button id="btn-cat-sapato" class="btn-categoria" onclick="selecionarCategoria('sapato')">Sapatos</button>
-        <button id="btn-cat-blusa" class="btn-categoria" onclick="selecionarCategoria('blusa')">Blusas</button>
-    </div>
-
     <div class="interface-provador">
         
+        <div class="painel-botoes">
+            <button id="btn-cat-top" class="btn-categoria ativo" onclick="selecionarCategoria('top')">Top</button>
+            <button id="btn-cat-vestido" class="btn-categoria" onclick="selecionarCategoria('vestido')">Vestido</button>
+            <button id="btn-cat-blusa" class="btn-categoria" onclick="selecionarCategoria('blusa')">Blusa</button>
+        </div>
+
         <button class="btn-seta" onclick="acionarSeta(-1)">⬅</button>
 
         <div class="container-camadas">
             <img src="base.png" class="camada" alt="Modelo Base">
 
             <img id="camada-sapato" src="sapato0.png" class="camada" alt="Sapato">
-            <img id="camada-top" src="top0.png" class="camada" alt="Top">
+            <img id="camada-saia" src="saia0.png" class="camada" alt="Saia">
             <img id="camada-calca" src="calca0.png" class="camada" alt="Calca">
+            <img id="camada-vestido" src="vestido0.png" class="camada" alt="Vestido">
+            <img id="camada-top" src="top0.png" class="camada" alt="Top">
             <img id="camada-blusa" src="blusa0.png" class="camada" alt="Blusa">
         </div>
 
         <button class="btn-seta" onclick="acionarSeta(1)">➡</button>
 
+        <div class="painel-botoes">
+            <button id="btn-cat-calca" class="btn-categoria" onclick="selecionarCategoria('calca')">Calça</button>
+            <button id="btn-cat-saia" class="btn-categoria" onclick="selecionarCategoria('saia')">Saia</button>
+            <button id="btn-cat-sapato" class="btn-categoria" onclick="selecionarCategoria('sapato')">Sapato</button>
+        </div>
+
     </div>
 
     <script>
-        // Começamos controlando a categoria 'top' por padrão
+        // Começa controlando o 'top' por padrão
         let categoriaAtiva = 'top';
 
-        // O histórico de índices que você já configurou
+        // Todos os índices iniciando em 0 (suas imagens base limpas)
         const indices = {
-            blusa: 0,
             top: 0,
+            vestido: 0,
+            blusa: 0,
             calca: 0,
+            saia: 0,
             sapato: 0
         };
 
-        // Seus limites máximos exatos
+        // AJUSTE AQUI: coloque a quantidade máxima de itens que você tem de cada um no GitHub
         const limitesMaximos = {
-            blusa: 4,
             top: 9,
+            vestido: 5,   // Exemplo: se tiver vestido1 até vestido5
+            blusa: 4,
             calca: 4,
+            saia: 5,      // Exemplo: se tiver saia1 até saia5
             sapato: 8
         };
 
-        // Função para mudar qual categoria as setas vão controlar
+        // Troca qual categoria as setas redondas vão comandar
         function selecionarCategoria(novaCategoria) {
-            // Remove a cor de destaque do botão antigo
+            // Apaga o destaque do botão antigo
             document.getElementById(`btn-cat-${categoriaAtiva}`).classList.remove('ativo');
             
-            // Define a nova categoria como a dona das setas
+            // Atribui a nova categoria ativa
             categoriaAtiva = novaCategoria;
             
-            // Adiciona a cor de destaque no novo botão clicado
+            // Acende o destaque no botão novo
             document.getElementById(`btn-cat-${categoriaAtiva}`).classList.add('ativo');
         }
 
-        // Função que as duas setas redondas chamam
+        // Responde ao clique das setas redondas laterais
         function acionarSeta(direcao) {
-            // Executa a troca passando a categoria selecionada no momento
             mudarRoupa(categoriaAtiva, direcao);
         }
 
-        // A sua função principal de cálculo, agora acionada dinamicamente
+        // Faz o cálculo matemático e atualiza a imagem correspondente
         function mudarRoupa(categoria, direcao) {
             const limiteDaCategoria = limitesMaximos[categoria];
 
