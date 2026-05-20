@@ -74,10 +74,10 @@
     <div class="interface-provador">
         
         <div class="painel-botoes">
-            <button class="btn-controle" onclick="mudarRoupa('blusa', -1)">⬅ Voltar Blusa</button>
             <button class="btn-controle" onclick="mudarRoupa('top', -1)">⬅ Voltar Top</button>
             <button class="btn-controle" onclick="mudarRoupa('calca', -1)">⬅ Voltar Calça</button>
             <button class="btn-controle" onclick="mudarRoupa('sapato', -1)">⬅ Voltar Sapato</button>
+            <button class="btn-controle" onclick="mudarRoupa('blusa', -1)">⬅ Voltar Blusa</button>
         </div>
 
         <div class="container-camadas">
@@ -93,10 +93,10 @@
         </div>
 
         <div class="painel-botoes">
-            <button class="btn-controle" onclick="mudarRoupa('blusa', 1)">Avançar Blusa ➡</button>
             <button class="btn-controle" onclick="mudarRoupa('top', 1)">Avançar Top ➡</button>
             <button class="btn-controle" onclick="mudarRoupa('calca', 1)">Avançar Calça ➡</button>
             <button class="btn-controle" onclick="mudarRoupa('sapato', 1)">Avançar Sapato ➡</button>
+            <button class="btn-controle" onclick="mudarRoupa('blusa', 1)">Avançar Blusa ➡</button>
         </div>
 
     </div>
@@ -104,10 +104,10 @@
     <script>
         // Guardamos em qual número de roupa cada categoria está começando
         const indices = {
-            blusa: 1,
-            top: 1,
-            calca: 1,
-            sapato: 1
+            blusa: 0,
+            top: 0,
+            calca: 0,
+            sapato: 0
         };
 
         // ALTERE AQUI: quantidade real de itens que você tem de cada um no GitHub
