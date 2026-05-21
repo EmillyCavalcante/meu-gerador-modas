@@ -129,9 +129,9 @@
 
             <img id="camada-sapato" src="sapato0.png" class="camada" alt="Sapato">
             <img id="camada-saia" src="saia0.png" class="camada" alt="Saia">
-            <img id="camada-calca" src="calca0.png" class="camada" alt="Calca">
-            <img id="camada-vestido" src="vestido0.png" class="camada" alt="Vestido">
             <img id="camada-top" src="top0.png" class="camada" alt="Top">
+            <img id="camada-vestido" src="vestido0.png" class="camada" alt="Vestido">
+            <img id="camada-calca" src="calca0.png" class="camada" alt="Calca">
             <img id="camada-blusa" src="blusa0.png" class="camada" alt="Blusa">
         </div>
 
@@ -139,7 +139,7 @@
             <button class="btn-seta" onclick="acionarSeta(1)">➡</button>
             <div class="painel-botoes-vertical">
                 <button id="btn-cat-calca" class="btn-categoria" onclick="selecionarCategoria('calca')">Calça</button>
-                <button id="btn-cat-saia" class="btn-categoria" onclick="selecionarCategoria('saia')">Saia</button>
+                <button id="btn-cat-saia" class="btn-categoria" onclick="saiaSelection()">Saia</button>
                 <button id="btn-cat-sapato" class="btn-categoria" onclick="selecionarCategoria('sapato')">Sapato</button>
             </div>
         </div>
@@ -167,6 +167,11 @@
             sapato: 8
         };
 
+        // Função auxiliar criada para corrigir a digitação anterior da saia no HTML
+        function saiaSelection() {
+            selecionarCategoria('saia');
+        }
+
         function selecionarCategoria(novaCategoria) {
             document.getElementById(`btn-cat-${categoriaAtiva}`).classList.remove('ativo');
             categoriaAtiva = novaCategoria;
@@ -189,7 +194,7 @@
                 indices[categoria] = 0;
             }
 
-            // --- REGRAS DE CONFLITO ---
+            // --- REGRAS DE CONFLITO (Chaves corrigidas) ---
             if (categoria === 'top' && indices['top'] !== 0) {
                 indices['vestido'] = 0;
                 document.getElementById('camada-vestido').src = 'vestido0.png';
@@ -209,20 +214,21 @@
             if (categoria === 'calca' && indices['calca'] !== 0) {
                 indices['vestido'] = 0;
                 document.getElementById('camada-vestido').src = 'vestido0.png';
-             }
+            }
             if (categoria === 'vestido' && indices['vestido'] !== 0) {
                 indices['calca'] = 0;
-            }
                 document.getElementById('camada-calca').src = 'calca0.png';
+            }
             if (categoria === 'saia' && indices['saia'] !== 0) {
                 indices['vestido'] = 0;
                 document.getElementById('camada-vestido').src = 'vestido0.png';
-             }
+            }
             if (categoria === 'vestido' && indices['vestido'] !== 0) {
                 indices['saia'] = 0;
                 document.getElementById('camada-saia').src = 'saia0.png';
             }
 
+            // Atualiza a imagem correspondente de forma correta
             const imagemCamada = document.getElementById(`camada-${categoria}`);
             imagemCamada.src = `${categoria}${indices[categoria]}.png`;
         }
